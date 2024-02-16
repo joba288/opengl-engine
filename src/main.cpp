@@ -1,10 +1,13 @@
 #include <GLFW/glfw3.h>
-#include <glad/glad.h> 
+#include <glad/glad.h>
+#include <stb_image.h> 
 #include <iostream>
 #include <vector>
 #include <ShaderLoader.h>
 #include "Model.h"
 #include "DisplayManager.h"
+#include "Renderer.h"
+#include "Texture.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -17,13 +20,15 @@ int main()
 {
 
     DisplayManager displayManager(SCR_WIDTH, SCR_HEIGHT);
+    Renderer renderer;
+    
     Shader shader("res/shaders/default.vs", "res/shaders/default.fs");
-
+    Texture texture("res/images/larrald.jpg");
     std::vector<Vertex> squareVerts;
-    squareVerts.push_back({{ 0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}});   // top right
-    squareVerts.push_back({{ 0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}});  // bottom right
+    squareVerts.push_back({{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}});   // top right
+    squareVerts.push_back({{ 0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}});  // bottom right
     squareVerts.push_back({{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}});  // bottom left
-    squareVerts.push_back({{-0.5f,  0.5f, 0.0f}, {0.0f, 0.0f}});  // top left
+    squareVerts.push_back({{-0.5f,  0.5f, 0.0f}, {0.0f, 1.0f}});  // top left
 
     std::vector<unsigned int> squareIndices = {
         0, 1, 3,  // first Triangle
@@ -33,20 +38,18 @@ int main()
 
     Model square(squareVerts, squareIndices);
 
+    shader.setInt("tex", texture.GetID());
+
     // render loop
     while (!glfwWindowShouldClose(displayManager.window))
     {
         // input
         processInput(displayManager.window);
-
         // render
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        shader.use();
-        glBindVertexArray(square.GetVAO());
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+        renderer.Prepare();
+        texture.BindTexture();
+        shader.use()
+        renderer.Render(square.GetVAO(), square.CountIndices());
 
         displayManager.UpdateDisplay();      
     }

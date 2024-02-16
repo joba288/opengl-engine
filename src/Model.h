@@ -19,23 +19,22 @@ class Model
     private:
         std::vector<float> vertices;
         std::vector<unsigned int> indices;
-
-        unsigned int VAO, VBO, EBO;
+        int vertexCount;
+        int indexCount;
 
         void InitVertexData(std::vector<Vertex> v);
 
+        unsigned int VAO, VBO, EBO;
     public:
         Model(std::vector<Vertex> v,
               std::vector<unsigned int> i);
         ~Model();
 
-        
-
         void Cleanup();
 
+        int CountVertices();
+        int CountIndices();
 
         unsigned int GetVAO();
-        
-
 
 };

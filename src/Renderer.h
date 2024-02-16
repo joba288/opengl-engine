@@ -1,20 +1,20 @@
 #pragma once
 
-
 #include <GLFW/glfw3.h>
 #include <glad/glad.h> 
-#include <iostream>
-
+#include "ShaderLoader.h"
+#include "Model.h"
 
 class Renderer
 {
     private:
 
     public:
-        Renderer(unsigned int VAO, Shader shader);
+        Renderer();
         ~Renderer();
 
-        
+        void Prepare();
+        void Render(unsigned int vaoID, int indexCount);
 
 
 };

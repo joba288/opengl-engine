@@ -8,9 +8,10 @@ Model::Model(std::vector<Vertex> v,
 
 
     InitVertexData(v);
-        
     Model::indices = i;
 
+    Model::vertexCount = v.size();
+    Model::indexCount = i.size();
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -49,8 +50,18 @@ void Model::InitVertexData(std::vector<Vertex> v)
         vertices.push_back(v[i].texCoords[0]);
         vertices.push_back(v[i].texCoords[1]);
     }
+
 }
 
+int Model::CountVertices()
+{
+    return vertexCount;
+}
+
+int Model::CountIndices()
+{
+    return indexCount;
+}
 
 unsigned int Model::GetVAO()
 {
