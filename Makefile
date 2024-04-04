@@ -1,7 +1,7 @@
 CFLAGS=-O2 -Wall -std=c++11
 SRC = $(wildcard src/*.cpp)
 build:
-	g++ $(SRC) src/glad.c -o main.exe $(CFLAGS) 	\
+	g++ -v $(SRC) src/glad.c -o main.exe $(CFLAGS) 	\
 	-I ./include/ -L ./lib/ 		    \
 	-lglfw3dll -lopengl32 -lglu32 -lgdi32 -lwinmm
 run: build

@@ -5,6 +5,7 @@
 #include "ShaderLoader.h"
 #include "Model.h"
 
+
 class Renderer
 {
     private:
@@ -14,7 +15,7 @@ class Renderer
         ~Renderer();
 
         void Prepare();
-        void Render(unsigned int vaoID, int indexCount);
+        void Render(Model* model, Shader* shader);
 
 
 };

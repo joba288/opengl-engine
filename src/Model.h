@@ -6,35 +6,24 @@
 #include <glm/glm.hpp>
 #include <vector> 
 #include <iostream>
+#include "Mesh.h"
+#include "Texture.h"
 
-
-struct Vertex{
-    float positions[3];
-    float texCoords[2];
-};
 
 
 class Model
 {
     private:
-        std::vector<float> vertices;
-        std::vector<unsigned int> indices;
-        int vertexCount;
-        int indexCount;
-
-        void InitVertexData(std::vector<Vertex> v);
-
-        unsigned int VAO, VBO, EBO;
+        Mesh* activeMesh;
+        Texture* activeTex;
     public:
-        Model(std::vector<Vertex> v,
-              std::vector<unsigned int> i);
+        Model(Mesh* mesh, Texture* texture);
         ~Model();
+        
+        Mesh* GetActiveMesh();
+        void SetActiveMesh(Mesh* mesh);
 
-        void Cleanup();
-
-        int CountVertices();
-        int CountIndices();
-
-        unsigned int GetVAO();
+        Texture* GetActiveTex();
+        void SetActiveTex(Texture* tex);
 
 };

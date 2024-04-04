@@ -12,11 +12,17 @@ void Renderer::Prepare()
     glClear(GL_COLOR_BUFFER_BIT);   
 }
 
-void Renderer::Render(unsigned int vaoID, int indexCount)
+void Renderer::Render(Model* model, Shader* shader)
 {
-
-    glBindVertexArray(vaoID);
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);   
+    
+    Mesh* mesh = model->GetActiveMesh();
+    Texture* tex = model->GetActiveTex();
+    
+    shader->use();
+    
+    tex->BindTexture();
+    glBindVertexArray(mesh->GetVAO());
+    glDrawElements(GL_TRIANGLES, mesh->CountIndices(), GL_UNSIGNED_INT, 0);   
 
 }
 

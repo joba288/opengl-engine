@@ -4,10 +4,11 @@
 #include <iostream>
 #include <vector>
 #include <ShaderLoader.h>
-#include "Model.h"
+#include "Mesh.h"
 #include "DisplayManager.h"
 #include "Renderer.h"
 #include "Texture.h"
+#include "Entity.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -36,20 +37,37 @@ int main()
 
     };
 
-    Model square(squareVerts, squareIndices);
+    Mesh squareMesh(squareVerts, squareIndices);
+    Model squareModel(&squareMesh, &texture);
 
-    shader.setInt("tex", texture.GetID());
+
+    Entity square(&squareModel);
+
+    Transform squareTransform;
+    squareTransform.modelMat = glm::mat4(1.0f);
+    squareTransform.projMat  = glm::perspective(glm::radians(45.0f),(float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    squareTransform.viewMat  = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
+    // to do setters for all these from the entity class
+    square.SetActiveTransform(squareTransform);
+
+
+    //to do fix this so this abomination dont happen
+    shader.setInt("tex", square.GetActiveModel()->GetActiveTex()->GetID());
+    
+
 
     // render loop
     while (!glfwWindowShouldClose(displayManager.window))
     {
         // input
         processInput(displayManager.window);
+
+        shader.setMat4("model", square.GetActiveTransform().modelMat);
+        shader.setMat4("projection", square.GetActiveTransform().projMat);
+        shader.setMat4("view", square.GetActiveTransform().viewMat);
         // render
         renderer.Prepare();
-        texture.BindTexture();
-        shader.use()
-        renderer.Render(square.GetVAO(), square.CountIndices());
+        renderer.Render(square.GetActiveModel(), &shader);
 
         displayManager.UpdateDisplay();      
     }
