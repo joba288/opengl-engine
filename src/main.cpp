@@ -44,15 +44,13 @@ int main()
     Entity square(&squareModel);
 
     Transform squareTransform;
-    squareTransform.modelMat = glm::mat4(1.0f);
+    squareTransform.modelMat = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 1.0f, -1.0f));
     squareTransform.projMat  = glm::perspective(glm::radians(45.0f),(float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
     squareTransform.viewMat  = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
     // to do setters for all these from the entity class
-    square.SetActiveTransform(squareTransform);
+    square.SetActiveTransform(&squareTransform);
 
-
-    //to do fix this so this abomination dont happen
-    shader.setInt("tex", square.GetActiveModel()->GetActiveTex()->GetID());
+    shader.setInt("tex", square.GetActiveTexID());
     
 
 
@@ -62,9 +60,9 @@ int main()
         // input
         processInput(displayManager.window);
 
-        shader.setMat4("model", square.GetActiveTransform().modelMat);
-        shader.setMat4("projection", square.GetActiveTransform().projMat);
-        shader.setMat4("view", square.GetActiveTransform().viewMat);
+        shader.setMat4("model", square.GetActiveTransform()->modelMat);
+        shader.setMat4("projection", square.GetActiveTransform()->projMat);
+        shader.setMat4("view", square.GetActiveTransform()->viewMat);
         // render
         renderer.Prepare();
         renderer.Render(square.GetActiveModel(), &shader);

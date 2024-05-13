@@ -21,16 +21,26 @@ class Entity
 {
     private:
         Model* activeModel;
-        Transform transform;
+        Transform* transform;
 
     public:
         Entity(Model* model);
         ~Entity();
-        //void SetActiveModel(Model* model);
+        void SetActiveModel(Model* model);
         Model* GetActiveModel();
-        void SetActiveTransform(Transform t);
-        Transform GetActiveTransform();
+        void SetActiveTransform(Transform* t);
+        Transform* GetActiveTransform();
         
         // set and get for all subclasses
+        Mesh* GetActiveMesh();
+        Texture* GetActiveTex();
+        void SetActiveMesh(Mesh* mesh);
+        void SetActiveTex(Texture* tex);
+        unsigned int GetActiveTexID();
+
+        void SetModelMat(glm::mat4 model);
+        void SetViewMat(glm::mat4 view);
+        void SetProjMat(glm::mat4 proj);
+
 
 };
