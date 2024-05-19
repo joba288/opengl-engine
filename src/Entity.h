@@ -11,9 +11,9 @@
 
 struct Transform
 {
-    glm::mat4 modelMat         = glm::mat4(1.0f);
-    glm::mat4 viewMat          = glm::mat4(1.0f);
-    glm::mat4 projMat          = glm::mat4(1.0f);
+    glm::vec3 pos = glm::vec3(0.0f, 0.f, 0.f);
+    glm::vec3 rot = glm::vec3(0.0f, 0.f, 0.f);
+    glm::vec3 scale = glm::vec3(1.0f, 1.f, 1.f);
 };
 
 
@@ -37,10 +37,5 @@ class Entity
         void SetActiveMesh(Mesh* mesh);
         void SetActiveTex(Texture* tex);
         unsigned int GetActiveTexID();
-
-        void SetModelMat(glm::mat4 model);
-        void SetViewMat(glm::mat4 view);
-        void SetProjMat(glm::mat4 proj);
-
 
 };

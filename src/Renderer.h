@@ -3,19 +3,20 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h> 
 #include "ShaderLoader.h"
-#include "Model.h"
+#include "Entity.h"
 
 
 class Renderer
 {
     private:
-
+        float fov = 70;
+        glm::mat4 projMat;
     public:
-        Renderer();
+        Renderer(Shader* shader);
         ~Renderer();
 
         void Prepare();
-        void Render(Model* model, Shader* shader);
+        void Render(Entity* entity, Shader* shader);
 
 
 };

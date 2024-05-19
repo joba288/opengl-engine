@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Entity.h"
+#include "Camera.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -21,9 +22,8 @@ int main()
 {
 
     DisplayManager displayManager(SCR_WIDTH, SCR_HEIGHT);
-    Renderer renderer;
-    
     Shader shader("res/shaders/default.vs", "res/shaders/default.fs");
+    Renderer renderer(&shader);
     Texture texture("res/images/larrald.jpg");
     std::vector<Vertex> squareVerts;
     squareVerts.push_back({{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f}});   // top right
@@ -40,32 +40,30 @@ int main()
     Mesh squareMesh(squareVerts, squareIndices);
     Model squareModel(&squareMesh, &texture);
 
+    Entity square(&squareModel);   
 
-    Entity square(&squareModel);
-
-    Transform squareTransform;
-    squareTransform.modelMat = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 1.0f, -1.0f));
-    squareTransform.projMat  = glm::perspective(glm::radians(45.0f),(float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    squareTransform.viewMat  = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
-    // to do setters for all these from the entity class
-    square.SetActiveTransform(&squareTransform);
-
-    shader.setInt("tex", square.GetActiveTexID());
+    Transform transform;
     
 
+    
+    shader.setInt("tex", square.GetActiveTexID());
+
+    Camera camera(glm::vec3(0.0f, 0.0f, 1.0f));
+    //camera.position = glm::vec3(0.f,0.f,-3.f);
 
     // render loop
     while (!glfwWindowShouldClose(displayManager.window))
     {
         // input
         processInput(displayManager.window);
-
-        shader.setMat4("model", square.GetActiveTransform()->modelMat);
-        shader.setMat4("projection", square.GetActiveTransform()->projMat);
-        shader.setMat4("view", square.GetActiveTransform()->viewMat);
+ 
+        square.SetActiveTransform(&transform);
         // render
         renderer.Prepare();
-        renderer.Render(square.GetActiveModel(), &shader);
+
+        shader.setMat4("view", camera.GetViewMatrix());
+
+        renderer.Render(&square, &shader);
 
         displayManager.UpdateDisplay();      
     }

@@ -26,21 +26,6 @@ Transform* Entity::GetActiveTransform()
     return Entity::transform;
 }
 
-// transform getters and setters
-
-void Entity::SetModelMat(glm::mat4 model)
-{
-    Entity::transform->modelMat = model;
-}
-void Entity::SetViewMat(glm::mat4 view)
-{
-    Entity::transform->viewMat = view;
-}
-void Entity::SetProjMat(glm::mat4 proj)
-{
-    Entity::transform->projMat = proj;
-}
-
 // model getters and setters
 
 Mesh* Entity::GetActiveMesh()
