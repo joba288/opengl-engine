@@ -44,11 +44,12 @@ void Mesh::InitVertexData(std::vector<Vertex> v)
 {
     for (size_t i = 0; i < v.size(); i++)
     {
-        vertices.push_back(v[i].positions[0]);
-        vertices.push_back(v[i].positions[1]);
-        vertices.push_back(v[i].positions[2]);
-        vertices.push_back(v[i].texCoords[0]);
-        vertices.push_back(v[i].texCoords[1]);
+        vertices.push_back(v[i].positions.x);
+        vertices.push_back(v[i].positions.y);
+        vertices.push_back(v[i].positions.z);
+        vertices.push_back(v[i].texCoords.x);
+        vertices.push_back(v[i].texCoords.y);
+
     }
 
 }

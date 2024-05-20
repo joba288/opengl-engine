@@ -9,8 +9,9 @@
 
 
 struct Vertex{
-    float positions[3];
-    float texCoords[2];
+    glm::vec3 positions;
+    glm::vec2 texCoords;
+    glm::vec3 normals;
 };
 
 
